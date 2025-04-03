@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    <title>{% block title %}Dehazer App{% endblock %}</title>
+    <style>
+        .navbar-custom {
+            backdrop-filter: blur(5px);    
+        }
+        
+        .navbar-brand img {
+            height: 60px;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            color: #fff; /* White for contrast */
+            font-weight: 700;
+            background-color:#e35124;
+            border-radius:50%;
+            height:60px;
+        }
+        .navbar-brand:hover{
+            background-color:#b58f1f;
+        }
+        .navbar-nav {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .nav-link {
+            width:100%;
+            display: flex;
+            justify-content: space-between;
+            
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff; 
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: #ff4e00;
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+
+        .navbar-toggler-icon {
+            color: #fff;
+        }
+
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1030;
+        }
+
+
+        
+        body {
+            background: url('https://images.unsplash.com/photo-1615048234151-6bcbca4043c4?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGNhcnRvb24lMjBjYW1lcmF8ZW58MHx8MHx8fDA%3D') no-repeat center center fixed;
+            background-size: cover;
+        }
+        
+
+    </style>
+</head>
+<body class="dark-theme">
+
+    <nav class="navbar navbar-expand-lg fixed-top text-uppercase navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Dehazer Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex justify-content-between w-100">
+                    <li class="nav-item">
+                        <a class="nav-link active rounded" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active rounded" href="{{ url_for('about') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active rounded" href="{{ url_for('contact') }}">Contact us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active rounded" href="{{ url_for('image_dehazer_route') }}">Image Dehazer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active rounded" href="{{ url_for('video_dehazer_route') }}">Video Dehazer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active rounded" href="{{ url_for('realtime_dehazer') }}">Realtime Dehazer</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+<div class="container mt-5 pt-5 bg-overlay">
+    {% block content %}{% endblock %}
+</div>
+
+    <footer>
+        <div class="footer text-center" style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: #343a40; padding: 1rem 0; color: #f8f9fa;">
+            <p style="margin-bottom: 0;"><span style="font-size: 1.2rem;">&copy; Design by RnD,CCA</span></p>
+        </div>
+    </footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/a48832a9b2.js" crossorigin="anonymous"></script>
+<script>
+    document.getElementById('theme-toggle').addEventListener('click', function () {
+        document.body.classList.toggle('light-theme');
+        document.body.classList.toggle('dark-theme');
+    });
+</script>
+</body>
+</html>

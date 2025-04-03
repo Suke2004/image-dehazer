@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Real-time Dehazer - Dehazer App{% endblock %}
+
+{% block content %}
+<div class="container mt-10">
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <h2 class="display-4">Original Video</h2>
+            <video id="originalVideo" controls>
+                <!-- Provide a fallback message if the video cannot be displayed -->
+                <p>Your browser does not support HTML5 video.</p>
+            </video>
+        </div>
+        <div class="col-md-6 text-center">
+            <h2 class="display-4">Dehazed Video</h2>
+            <video id="dehazedVideo" controls>
+                <!-- Provide a fallback message if the video cannot be displayed -->
+                <p>Your browser does not support HTML5 video.</p>
+            </video>
+        </div>
+    </div>
+</div>
+<script>
+    var dehazedVideo = document.getElementById('dehazedVideo');
+
+    // EventSource to receive frames from Flask /video_feed route
+    var eventSource = new EventSource("/video_feed");
+
+    // Event listener for receiving frames
+    eventSource.onmessage = function(event) {
+        dehazedVideo.src = 'data:image/jpeg;base64,' + event.data;
+    };
+
+    // Event listener for handling errors
+    eventSource.onerror = function(event) {
+        console.error("EventSource error:", event);
+        eventSource.close();
+    };
+
+    // Function to handle closing EventSource when leaving the page
+    window.onbeforeunload = function() {
+        eventSource.close();
+    };
+</script>
+{% endblock %}
