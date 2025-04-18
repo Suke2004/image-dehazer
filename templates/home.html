@@ -1,27 +1,44 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/fontawesome.min.css">
 <style>
-    .btn:hover{
-        transform:scale(1.1);
-    }   
-    .text{
-        margin:12%;
-        background-color: rgb(0, 0, 0, 0.6);
-        border-radius:60px;
-        
+    .hero-box {
+        background-color: rgba(0, 0, 0, 0.65);
+        padding: 4rem 2rem;
+        border-radius: 40px;
+        margin: 5% auto;
+        max-width: 800px;
+        text-align: center;
+        color: #fff;
+    }
+
+    .hero-box h1 {
+        font-size: 4rem;
+        font-weight: bold;
+        color: #e3b409;
+    }
+
+    .hero-buttons .btn {
+        min-width: 160px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        margin: 0.5rem;
+        transition: transform 0.3s ease;
+        border: none;
+    }
+
+    .hero-buttons .btn:hover {
+        transform: scale(1.1);
     }
 </style>
-<div class="text d-flex flex-column align-items-center justify-content-center text-center" style="color: #181616;">
-    <div class="mx-auto mb-4">
-        <h1 class="display-1 font-weight-bold" style="color: #e3b409;">
-            Dehazer
-        </h1>
-    </div>
-    <div class="mt-5 d-flex flex-wrap justify-content-center">
-        <a class="btn btn-lg mx-3 mb-3" href="{{ url_for('image_dehazer_route') }}" style="background-color: #00a6fb; color: #fff;">Image</a>
-        <a class="btn btn-lg mx-3 mb-3" href="{{ url_for('video_dehazer_route') }}" style="background-color: #f5b700; color: #fff;">Video</a>
-        <a class="btn btn-lg mx-3 mb-3" href="{{ url_for('realtime_dehazer') }}" style="background-color: #ff4e00; color: #fff;">Realtime</a>
+
+<div class="hero-box">
+    <h1>Dehazer</h1>
+    <div class="hero-buttons mt-4 d-flex flex-wrap justify-content-center">
+        <a class="btn" href="{{ url_for('image_dehazer_route') }}" style="background-color: #00a6fb; color: #fff;">Image</a>
+        <a class="btn" href="{{ url_for('video_dehazer_route') }}" style="background-color: #f5b700; color: #fff;">Video</a>
+        <a class="btn" href="{{ url_for('realtime_dehazer') }}" style="background-color: #ff4e00; color: #fff;">Realtime</a>
     </div>
 </div>
 {% endblock %}
