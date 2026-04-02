@@ -4,7 +4,7 @@ import copy
 
 
 class ImageDehazer():
-    def __init__(self, airlightEstimation_windowSze=15, boundaryConstraint_windowSze=3, C0=20, C1=300,regularize_lambda=0.1, sigma=0.5, delta=0.85, showHazeTransmissionMap=True):
+    def __init__(self, airlightEstimation_windowSze=15, boundaryConstraint_windowSze=3, C0=20, C1=300,regularize_lambda=0.1, sigma=0.5, delta=0.85, showHazeTransmissionMap=False):
         self.airlightEstimation_windowSze = airlightEstimation_windowSze
         self.boundaryConstraint_windowSze = boundaryConstraint_windowSze
         self.C0 = C0
@@ -217,7 +217,7 @@ class ImageDehazer():
 
 
 def remove_haze(HazeImg, airlightEstimation_windowSze=15, boundaryConstraint_windowSze=3, C0=20, C1=300,
-                regularize_lambda=0.1, sigma=0.5, delta=0.85, showHazeTransmissionMap=True):
+                regularize_lambda=0.1, sigma=0.5, delta=0.85, showHazeTransmissionMap=False):
     Dehazer = ImageDehazer(airlightEstimation_windowSze=airlightEstimation_windowSze,
                             boundaryConstraint_windowSze=boundaryConstraint_windowSze, C0=C0, C1=C1,
                             regularize_lambda=regularize_lambda, sigma=sigma, delta=delta,
