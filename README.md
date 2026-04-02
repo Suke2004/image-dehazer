@@ -1,8 +1,4 @@
-# 🌫️ Single Image & Video Dehazing via Dark Channel Prior
-
-**Computer Vision Final Year Project**  
-*Developed by Sukesh Reddy*
-
+# Single Image & Video Dehazing via Dark Channel Prior
 This repository contains a Flask-based web application implementing an environmental dehazing system. The core algorithm estimates atmospheric light and transmission maps using the **Dark Channel Prior (DCP)** method, allowing the system to recover geometry and intrinsic contrast from static imagery, video files, and real-time streams without relying on external deep learning checkpoints.
 
 ---
@@ -80,4 +76,4 @@ The application interface will bind to standard localhost port 5000:
 
 ## 🧑‍💻 Author
 
-This repository represents the culmination of a Computer Vision Final Year Project crafted by **Sukesh Reddy**. 
+This repository represents the culmination of a Computer Vision Project crafted by **Sukesh Reddy**.
