@@ -1,69 +1,70 @@
 {% extends "base.html" %}
-
-{% block title %}Image Dehazer - Dehazer App{% endblock %}
-
+{% block title %}Image Processing - Dehazer App{% endblock %}
 {% block content %}
 <style>
     .page-container {
         margin-top: 5vh;
         width: 100%;
         max-width: 900px;
-        animation: fadeIn 0.8s ease-out;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+        animation: fadeIn 0.6s ease-out;
     }
 
     h1.title {
-        color: var(--primary-glow);
-        text-align: center;
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+        font-size: 2rem;
+    }
+    
+    .subtitle {
+        color: var(--text-muted);
         margin-bottom: 2rem;
+        font-size: 1rem;
     }
 
     /* Drag & Drop Zone */
     .dropzone {
-        border: 2px dashed var(--primary-glow);
-        border-radius: 16px;
+        border: 2px dashed var(--glass-border);
+        border-radius: 12px;
         padding: 3rem 2rem;
         text-align: center;
-        background: rgba(0, 229, 255, 0.02);
-        transition: all 0.3s ease;
+        background: rgba(15, 23, 42, 0.4);
+        transition: all 0.2s ease;
         cursor: pointer;
-        position: relative;
     }
 
-    .dropzone.dragover {
-        background: rgba(0, 229, 255, 0.1);
-        border-color: var(--secondary-glow);
-        transform: scale(1.02);
+    .dropzone.dragover, .dropzone:hover {
+        border-color: var(--primary-color);
+        background: rgba(59, 130, 246, 0.05);
     }
 
     .dropzone-icon {
-        font-size: 3rem;
-        color: var(--primary-glow);
+        font-size: 2.5rem;
+        color: var(--text-muted);
         margin-bottom: 1rem;
+        transition: color 0.2s ease;
+    }
+    
+    .dropzone:hover .dropzone-icon {
+        color: var(--primary-color);
     }
 
     .dropzone-text {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+        font-weight: 500;
         color: var(--text-color);
         margin-bottom: 0.5rem;
     }
 
     .dropzone-subtext {
         font-size: 0.9rem;
-        color: #aaa;
+        color: var(--text-muted);
     }
 
-    #file-input {
-        display: none;
-    }
+    #file-input { display: none; }
 
     .preview-container {
         display: none;
-        margin-top: 1rem;
+        margin-top: 1.5rem;
         text-align: center;
     }
 
@@ -72,7 +73,6 @@
         max-height: 250px;
         border-radius: 8px;
         border: 1px solid var(--glass-border);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     }
 
     .btn-submit-container {
@@ -87,11 +87,10 @@
         max-width: 800px;
         margin: 3rem auto 0 auto;
         overflow: hidden;
-        border-radius: 16px;
+        border-radius: 12px;
         border: 1px solid var(--glass-border);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-        background-color: #000;
-        aspect-ratio: 16/9; /* Default fallback */
+        background-color: var(--bg-secondary);
+        aspect-ratio: 16/9; 
     }
 
     .comparison-slider-wrapper img {
@@ -109,12 +108,12 @@
         height: 100%;
         overflow: hidden;
         z-index: 2;
-        border-right: 2px solid #fff;
+        border-right: 2px solid white;
     }
 
     .img-before img {
-        width: 100vw; /* To keep aspect ratio trick working, will be handled by JS */
-        max-width: 800px; /* Needs to match container max-width */
+        width: 100vw; 
+        max-width: 800px; 
     }
 
     .img-after {
@@ -142,90 +141,89 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
         border-radius: 50%;
-        background-color: #fff;
+        background-color: white;
         z-index: 4;
         display: flex;
         justify-content: center;
         align-items: center;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
         pointer-events: none;
     }
     .slider-button::before, .slider-button::after {
         content: '';
-        border: solid #000;
+        border: solid #0f172a;
         border-width: 0 2px 2px 0;
         display: inline-block;
         padding: 3px;
     }
-    .slider-button::before {
-        transform: rotate(135deg);
-        margin-right: 5px;
-    }
-    .slider-button::after {
-        transform: rotate(-45deg);
-        margin-left: 5px;
-    }
+    .slider-button::before { transform: rotate(135deg); margin-right: 4px; }
+    .slider-button::after { transform: rotate(-45deg); margin-left: 4px; }
 
     .badge-label {
         position: absolute;
-        top: 10px;
-        padding: 5px 10px;
-        border-radius: 4px;
-        background: rgba(0, 0, 0, 0.6);
+        top: 12px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        background: rgba(15, 23, 42, 0.8);
         color: #fff;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
         backdrop-filter: blur(4px);
     }
-    .badge-before { left: 10px; z-index: 5; }
-    .badge-after { right: 10px; z-index: 5; }
+    .badge-before { left: 12px; z-index: 5; }
+    .badge-after { right: 12px; z-index: 5; }
 </style>
 
 <div class="page-container glass-container">
-    <h1 class="title">Image Dehazer</h1>
+    <h1 class="title">Single Image Evaluation</h1>
+    <p class="subtitle">Upload a static dataset sample to run the DCP algorithm.</p>
     
     <form method="POST" enctype="multipart/form-data" id="upload-form">
         <div class="dropzone" id="dropzone">
-            <i class="fas fa-cloud-upload-alt dropzone-icon"></i>
-            <div class="dropzone-text">Drag & Drop your image here</div>
-            <div class="dropzone-subtext">or click to browse</div>
+            <i class="fa-solid fa-cloud-arrow-up dropzone-icon"></i>
+            <div class="dropzone-text">Drop image payload here</div>
+            <div class="dropzone-subtext">Supports PNG, JPG, BMP formats</div>
             <input type="file" id="file-input" name="file" accept="image/*" required>
         </div>
         
         <div class="preview-container" id="preview-container">
             <img id="preview-img" class="preview-img" src="" alt="Preview">
-            <p id="preview-filename" style="margin-top: 0.5rem; color: #aaa;"></p>
+            <p id="preview-filename" style="margin-top: 0.75rem; color: var(--text-muted); font-size: 0.9rem; font-family: monospace;"></p>
         </div>
 
         <div class="btn-submit-container">
-            <button type="submit" class="btn-glow" id="submit-btn" style="display: none;">Dehaze Image</button>
+            <button type="submit" class="btn-primary" id="submit-btn" style="display: none;">Execute Algorithm</button>
         </div>
     </form>
 
     {% if original_image and dehazed_image %}
-    <div class="comparison-slider-wrapper" id="compare-wrapper">
-        <div class="badge-label badge-before">Original</div>
-        <div class="badge-label badge-after">Dehazed</div>
-        
-        <div class="img-after">
-            <img src="{{ dehazed_image }}" alt="Dehazed Image" id="img-after">
+    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--glass-border);">
+        <h3 style="margin-bottom: 1.5rem; text-align: center; font-size: 1.2rem;">Algorithm Results</h3>
+        <div class="comparison-slider-wrapper" id="compare-wrapper">
+            <div class="badge-label badge-before">Input (Hazy)</div>
+            <div class="badge-label badge-after">Output (Recovered)</div>
+            
+            <div class="img-after">
+                <img src="{{ dehazed_image }}" alt="Dehazed Image" id="img-after">
+            </div>
+            
+            <div class="img-before" id="img-before-container">
+                <img src="{{ original_image }}" alt="Original Image" id="img-before">
+            </div>
+            
+            <input type="range" min="0" max="100" value="50" class="slider" id="slider">
+            <div class="slider-button" id="slider-button"></div>
         </div>
-        
-        <div class="img-before" id="img-before-container">
-            <img src="{{ original_image }}" alt="Original Image" id="img-before">
-        </div>
-        
-        <input type="range" min="0" max="100" value="50" class="slider" id="slider">
-        <div class="slider-button" id="slider-button"></div>
     </div>
     {% endif %}
 </div>
 
 <script>
-    // Drag and Drop Logic
     const dropzone = document.getElementById('dropzone');
     const fileInput = document.getElementById('file-input');
     const previewContainer = document.getElementById('preview-container');
@@ -234,16 +232,8 @@
     const submitBtn = document.getElementById('submit-btn');
 
     dropzone.addEventListener('click', () => fileInput.click());
-
-    dropzone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropzone.classList.add('dragover');
-    });
-
-    dropzone.addEventListener('dragleave', () => {
-        dropzone.classList.remove('dragover');
-    });
-
+    dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
     dropzone.addEventListener('drop', (e) => {
         e.preventDefault();
         dropzone.classList.remove('dragover');
@@ -253,15 +243,10 @@
         }
     });
 
-    fileInput.addEventListener('change', () => {
-        if (fileInput.files.length) {
-            handleFile(fileInput.files[0]);
-        }
-    });
+    fileInput.addEventListener('change', () => { if (fileInput.files.length) handleFile(fileInput.files[0]); });
 
     function handleFile(file) {
         if (!file.type.startsWith('image/')) return;
-        
         const reader = new FileReader();
         reader.onload = (e) => {
             previewImg.src = e.target.result;
@@ -273,7 +258,6 @@
         reader.readAsDataURL(file);
     }
 
-    // Comparison Slider Logic
     {% if original_image and dehazed_image %}
     const slider = document.getElementById('slider');
     const imgBeforeContainer = document.getElementById('img-before-container');
@@ -289,18 +273,15 @@
 
     slider.addEventListener('input', updateSlider);
 
-    // Ensure resizing handles the absolute image width correctly
     function resizeImages() {
         const width = wrapper.offsetWidth;
         imgBefore.style.width = width + 'px';
     }
 
     window.addEventListener('resize', resizeImages);
-    
-    // Initial setup after images load
     imgBefore.onload = resizeImages;
     resizeImages();
-    updateSlider(); // Initial state
+    updateSlider(); 
     {% endif %}
 </script>
 {% endblock %}

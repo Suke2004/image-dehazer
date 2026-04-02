@@ -6,70 +6,62 @@
 <style>
     .hero-container {
         text-align: center;
-        margin-top: 10vh;
-        animation: fadeIn 1s ease-out;
+        margin-top: 8vh;
+        animation: fadeIn 0.8s ease-out;
         max-width: 800px;
         width: 100%;
         box-sizing: border-box;
     }
 
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
+        from { opacity: 0; transform: translateY(15px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
     .hero-container h1 {
-        font-size: clamp(3rem, 8vw, 5rem);
-        background: linear-gradient(to right, var(--primary-glow), var(--secondary-glow));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        font-size: clamp(2.5rem, 6vw, 4rem);
         margin-bottom: 1.5rem;
-        text-shadow: 0 0 40px rgba(0, 229, 255, 0.2);
+        line-height: 1.2;
+    }
+
+    .hero-container h1 span {
+        color: var(--primary-color);
     }
 
     .hero-buttons {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 1.5rem;
-        margin-top: 2rem;
+        gap: 1rem;
+        margin-top: 2.5rem;
     }
 
     .btn-hero {
-        font-size: 1.2rem;
-        padding: 1rem 2.5rem;
-        min-width: 180px;
+        min-width: 160px;
     }
     
-    .btn-image {
-        background: linear-gradient(135deg, #00E5FF, #007AA5);
-        box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
-        color: #000;
+    .btn-secondary {
+        background: var(--bg-secondary);
+        border: 1px solid var(--glass-border);
+        color: var(--text-color);
     }
-    .btn-image:hover { box-shadow: 0 8px 25px rgba(0, 229, 255, 0.5); }
-    
-    .btn-video {
-        background: linear-gradient(135deg, #f5b700, #c49200);
-        box-shadow: 0 4px 15px rgba(245, 183, 0, 0.3);
-        color: #000;
+    .btn-secondary:hover {
+        background: #334155; /* Slate 700 */
+        border-color: var(--primary-color);
     }
-    .btn-video:hover { box-shadow: 0 8px 25px rgba(245, 183, 0, 0.5); }
-    
-    .btn-realtime {
-        background: linear-gradient(135deg, #ff4e00, #cc3e00);
-        box-shadow: 0 4px 15px rgba(255, 78, 0, 0.3);
-        color: #fff;
-    }
-    .btn-realtime:hover { box-shadow: 0 8px 25px rgba(255, 78, 0, 0.5); }
 </style>
 
 <div class="glass-container hero-container">
-    <h1>Dehazer</h1>
-    <p style="font-size: 1.2rem; color: #ccc;">Experience crystal-clear visuals empowered by AI.</p>
+    <div style="margin-bottom: 1.5rem; display: inline-block; padding: 0.25rem 1rem; border-radius: 20px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: var(--primary-color); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">
+        Final Year Project
+    </div>
+    <h1>Single Image & Video <span>Dehazing</span></h1>
+    <p style="font-size: 1.1rem; color: var(--text-muted); line-height: 1.6; max-width: 600px; margin: 0 auto;">
+        An academic implementation of the Dark Channel Prior algorithm to estimate atmospheric light and restore contrast in low-visibility environments.
+    </p>
     <div class="hero-buttons">
-        <a class="btn-glow btn-hero btn-image" href="{{ url_for('image_dehazer_route') }}">Image</a>
-        <a class="btn-glow btn-hero btn-video" href="{{ url_for('video_dehazer_route') }}">Video</a>
-        <a class="btn-glow btn-hero btn-realtime" href="{{ url_for('realtime_dehazer') }}">Realtime</a>
+        <a class="btn-primary btn-hero" href="{{ url_for('image_dehazer_route') }}"><i class="fa-regular fa-image" style="margin-right: 8px;"></i> Image Analysis</a>
+        <a class="btn-primary btn-secondary btn-hero" href="{{ url_for('video_dehazer_route') }}"><i class="fa-solid fa-film" style="margin-right: 8px;"></i> Video Batch</a>
     </div>
 </div>
 {% endblock %}

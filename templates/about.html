@@ -1,37 +1,33 @@
 {% extends 'base.html' %}
-{% block title %}About - Dehazer App{% endblock %}
+{% block title %}Methodology - Dehazer App{% endblock %}
 {% block content %}
 <style>
     .page-container {
         margin-top: 5vh;
         width: 100%;
         max-width: 800px;
-        animation: fadeIn 0.8s ease-out;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+        animation: fadeIn 0.6s ease-out;
     }
 
     h1.title {
-        color: var(--primary-glow);
-        text-align: center;
+        color: var(--text-color);
         margin-bottom: 2rem;
-        font-size: 3rem;
+        font-size: 2.5rem;
+        border-bottom: 1px solid var(--glass-border);
+        padding-bottom: 1rem;
     }
 
-    h5 {
-        color: #ff4e00;
-        font-size: 1.5rem;
+    h3 {
+        color: var(--primary-color);
+        font-size: 1.4rem;
         margin-top: 2rem;
         margin-bottom: 1rem;
     }
 
     p, li {
-        font-size: 1.1rem;
-        line-height: 1.6;
-        color: #ddd;
+        font-size: 1rem;
+        line-height: 1.7;
+        color: var(--text-muted);
     }
 
     ul {
@@ -40,41 +36,47 @@
     }
 
     li {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
         padding-left: 1.5rem;
         position: relative;
     }
 
     li::before {
-        content: '▹';
+        content: '■';
         position: absolute;
         left: 0;
-        color: var(--primary-glow);
+        top: 2px;
+        font-size: 0.65rem;
+        color: var(--primary-color);
     }
 </style>
 
 <div class="page-container glass-container">
-    <h1 class="title">About the Project</h1>
+    <h1 class="title">Methodology & Research</h1>
     
-    <h5>What is the Dehazer App?</h5>
+    <h3>Project Overview</h3>
     <p>
-        The <strong>Dehazer App</strong> is a smart web-based application designed to remove haze from images, videos, and real-time camera streams. Built with Flask and OpenCV, this project applies image processing techniques — and optionally, deep learning — to restore contrast, enhance clarity, and improve visual quality in low-visibility conditions like fog, smoke, or pollution.
+        This application represents a Computer Vision Final Year Project developed by Sukesh Reddy. The primary objective is to implement a robust environmental dehazing system capable of processing static imagery, batch video files, and real-time camera streams without relying on external deep learning checkpoints.
     </p>
     <p>
-        Users can upload hazy media or activate their webcam to instantly see dehazed results through an intuitive, mobile-friendly interface. The app is particularly useful in fields like photography, surveillance, autonomous driving, and environmental monitoring.
+        The backend infrastructure utilizes Python and Flask, heavily leveraging the OpenCV framework for fast matrix operations and computer vision mathematical approximations.
     </p>
     
-    <h5>Core Features</h5>
+    <h3>The Dark Channel Prior Algorithm</h3>
+    <p>
+        The core logic strictly implements the <strong>Dark Channel Prior (DCP)</strong> method. In computer vision, the DCP observation suggests that in most non-sky patches of haze-free outdoor images, at least one color channel has some pixels whose intensity is very low and close to zero.
+    </p>
+    <p>
+        The pipeline executed in this project includes:
+    </p>
     <ul>
-        <li>📸 Dehaze uploaded images with one click</li>
-        <li>🎞️ Process videos and view side-by-side results</li>
-        <li>🎥 Real-time dehazing using your device's camera</li>
-        <li>⚡ Responsive, premium Glassmorphism UI</li>
-        <li>🛠️ Built with Flask, Python, and OpenCV</li>
+        <li><strong>Airlight Estimation:</strong> Approximating the global atmospheric light from the most haze-opaque regions of the image using morphological erosions.</li>
+        <li><strong>Transmission Map Calculation:</strong> Computing the boundary constraints and applying a Kirsch Filters bank to solve for the regularized transmission map.</li>
+        <li><strong>Scene Radiance Recovery:</strong> Inverting the atmospheric scattering model formulation to reconstruct the original geometry and contrast.</li>
     </ul>
     
-    <p style="margin-top: 2rem;">
-        The project demonstrates how modern web technologies and computer vision can be combined to solve real-world problems in creative and accessible ways.
+    <p style="margin-top: 2.5rem; font-style: italic; font-size: 0.9rem; border-top: 1px solid var(--glass-border); padding-top: 1rem;">
+        This implementation successfully demonstrates the applicability of traditional physical scattering models in digital image processing.
     </p>
 </div>
 {% endblock %}

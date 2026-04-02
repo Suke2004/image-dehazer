@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Realtime Dehazer - Dehazer App{% endblock %}
+{% block title %}Realtime Stream - Dehazer App{% endblock %}
 
 {% block content %}
 <style>
@@ -8,18 +8,20 @@
         margin-top: 5vh;
         width: 100%;
         max-width: 800px;
-        animation: fadeIn 0.8s ease-out;
+        animation: fadeIn 0.6s ease-out;
         text-align: center;
     }
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
     h1.title {
-        color: #ff4e00;
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+        font-size: 2rem;
+    }
+    
+    .subtitle {
+        color: var(--text-muted);
         margin-bottom: 2rem;
+        font-size: 1rem;
     }
 
     .file-input-wrapper {
@@ -33,48 +35,51 @@
     .video-container {
         margin-top: 3rem;
         text-align: left;
+        background: rgba(15, 23, 42, 0.4);
+        padding: 1.5rem;
+        border-radius: 12px;
+        border: 1px solid var(--glass-border);
     }
 
-    .video-container h2 {
-        color: var(--primary-glow);
+    .video-container h3 {
+        color: var(--text-color);
         margin-bottom: 1rem;
+        font-size: 1.1rem;
     }
 
     video {
         width: 100%;
-        border-radius: 12px;
-        border: 2px solid var(--glass-border);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        border-radius: 8px;
+        border: 1px solid var(--glass-border);
+        background: #000;
     }
 </style>
 
 <div class="page-container glass-container">
-    <h1 class="title">Realtime Dehazer</h1>
-    <p>Upload a video stream or connect a real-time feed.</p>
+    <h1 class="title">Live Stream Analysis</h1>
+    <p class="subtitle">Stream real-time webcam data through the algorithm pipeline.</p>
     
     <form method="POST" enctype="multipart/form-data">
         <div class="file-input-wrapper">
             <input type="file" id="file" name="file" class="form-control" style="max-width: 400px;" accept="video/*" required>
         </div>
-        <button type="submit" class="btn-glow" style="background: linear-gradient(135deg, #ff4e00, #cc3e00);">Start Stream</button>
+        <button type="submit" class="btn-primary">Initialize Socket</button>
     </form>
 
     {% if original_video %}
     <div class="video-container">
-        <h2>Original Stream</h2>
+        <h3>Original Live Input</h3>
         <video controls>
             <source src="{{ original_video }}" type="video/mp4">
-            Your browser does not support the video tag.
         </video>
     </div>
     {% endif %}
 
     {% if dehazed_video %}
-    <div class="video-container">
-        <h2>Dehazed Stream</h2>
-        <video controls style="border-color: #ff4e00;">
+    <div class="video-container" style="margin-top: 1.5rem;">
+        <h3>Processed Live Stream</h3>
+        <video controls>
             <source src="{{ dehazed_video }}" type="video/mp4">
-            Your browser does not support the video tag.
         </video>
     </div>
     {% endif %}

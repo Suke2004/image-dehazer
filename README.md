@@ -1,125 +1,83 @@
+# 🌫️ Single Image & Video Dehazing via Dark Channel Prior
 
-# 🌫️ Image & Video Dehazer (Flask App)
+**Computer Vision Final Year Project**  
+*Developed by Sukesh Reddy*
 
-This is a Flask-based web application for removing haze from images, videos, and real-time webcam input using a custom dehazing model.
+This repository contains a Flask-based web application implementing an environmental dehazing system. The core algorithm estimates atmospheric light and transmission maps using the **Dark Channel Prior (DCP)** method, allowing the system to recover geometry and intrinsic contrast from static imagery, video files, and real-time streams without relying on external deep learning checkpoints.
 
 ---
 
 ## 📁 Project Structure
 
-```
+```text
 DeHazer/
-├── app.py
+├── app.py                 # Main Flask server and API routing architecture
 ├── model/
-│   └── image_dehazer.py
+│   └── image_dehazer.py   # Core OpenCV logic (DCP Algorithm implementation)
 ├── static/
-│   ├── uploads/
-│   └── processed/
+│   ├── uploads/           # Raw input payload directory
+│   └── processed/         # Solved outputs with UUIDs
 ├── templates/
-│   ├── home.html
-│   ├── contact.html
-│   ├── about.html
-│   ├── image_dehazer.html
-│   └── video_dehazer.html
-├── README.md
+│   ├── home.html          # Web application UI views
+│   └── ...
+├── requirements.txt
+└── README.md
 ```
 
 ---
 
-## 🚀 Features
+## 🚀 Key Academic Features
 
-- Upload and dehaze **images**
-- Upload and dehaze **videos**
-- Real-time webcam stream dehazing
-- Simple UI with separate pages for image, video, and live dehazing
+- **Dark Channel Prior Implementation**: Realization of physical scattering models entirely mathematically.
+- **Robust Concurrency**: Safely handles file ingest via UUID normalization and backend thread management.
+- **Automatic Garbage Collection**: Employs a daemon worker thread to prevent disk overflows during inference validation.
+- **Academic Dashboard UI**: Sleek, distraction-free HTML/CSS interface focused on result evaluation.
 
 ---
 
-## 🛠️ Requirements
+## 🛠️ Environment Prerequisites
 
 - Python 3.7+
-- Flask
-- OpenCV
-- Werkzeug
-- numpy
+- Flask >= 3.0.0
+- OpenCV (`opencv-python`)
+- Werkzeug >= 3.0.0
+- NumPy
 
-Install the required packages with:
+Install the dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
+
 ---
 
-## 🔧 Configuration
+## 🧠 Methodology Detail
 
-Modify the folder paths in `app.py` if needed:
+The algorithm logic resides entirely within `model/image_dehazer.py`. The fundamental pipeline includes:
+1. **Airlight Estimation**: Calculating global atmospheric light using morphological erosions on the input matrices.
+2. **Transmission Matrix Formulation**: Solving boundary conditions using the Kirsch Edge Filter bank for localized approximations.
+3. **Radiance Recovery**: Generating the definitive Haze-corrected output structure array.
 
+It returns:
 ```python
-app.config['UPLOAD_FOLDER'] = r'D:\RnD, CCA\Parichay 2024\DeHazer\static\uploads'
-app.config['PROCESSED_FOLDER'] = r'D:\RnD, CCA\Parichay 2024\DeHazer\static\processed'
+dehazed_image_matrix, transmission_map
 ```
-
-These folders will be created automatically if they don't exist.
 
 ---
 
-## 🧠 Haze Removal Logic
+## 🖥️ Running the Validation Server
 
-The dehazing logic is handled by the `remove_haze()` function located in:
-
-```
-model/image_dehazer.py
-```
-
-This should return a tuple of:
-```python
-dehazed_image, other_output
-```
-
-You can customize this function as needed based on your haze removal algorithm.
-
----
-
-## 🖥️ Running the App
-
-Start the Flask server:
+Initialize the local Flask environment:
 
 ```bash
 python app.py
 ```
 
-Then open your browser and go to:
-
-```
-http://127.0.0.1:5000/
-```
-
----
-
-## 🌐 Available Routes
-
-| Route                 | Description                        |
-|----------------------|------------------------------------|
-| `/` or `/home`       | Home page                          |
-| `/image_dehazer`     | Upload and dehaze an image         |
-| `/video_dehazer`     | Upload and dehaze a video          |
-| `/realtime_dehazer`  | Real-time webcam dehazing preview  |
-| `/about`             | About page                         |
-| `/contact`           | Contact page                       |
-
----
-
-## 📸 Output
-
-- Uploaded media is stored in `static/uploads`
-- Dehazed outputs are saved to `static/processed`
-- Processed results are shown on the respective result pages
+The application interface will bind to standard localhost port 5000:
+`http://127.0.0.1:5000/`
 
 ---
 
 ## 🧑‍💻 Author
 
-Built with ❤️ by Sukesh Reddy
-Feel free to personalize this project and improve upon it.
-
----
+This repository represents the culmination of a Computer Vision Final Year Project crafted by **Sukesh Reddy**. 
