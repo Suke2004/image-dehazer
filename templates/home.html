@@ -1,44 +1,75 @@
 {% extends 'base.html' %}
 
+{% block title %}Dehazer App - Home{% endblock %}
+
 {% block content %}
 <style>
-    .hero-box {
-        background-color: rgba(0, 0, 0, 0.65);
-        padding: 4rem 2rem;
-        border-radius: 40px;
-        margin: 5% auto;
-        max-width: 800px;
+    .hero-container {
         text-align: center;
+        margin-top: 10vh;
+        animation: fadeIn 1s ease-out;
+        max-width: 800px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-container h1 {
+        font-size: clamp(3rem, 8vw, 5rem);
+        background: linear-gradient(to right, var(--primary-glow), var(--secondary-glow));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 0 40px rgba(0, 229, 255, 0.2);
+    }
+
+    .hero-buttons {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .btn-hero {
+        font-size: 1.2rem;
+        padding: 1rem 2.5rem;
+        min-width: 180px;
+    }
+    
+    .btn-image {
+        background: linear-gradient(135deg, #00E5FF, #007AA5);
+        box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
+        color: #000;
+    }
+    .btn-image:hover { box-shadow: 0 8px 25px rgba(0, 229, 255, 0.5); }
+    
+    .btn-video {
+        background: linear-gradient(135deg, #f5b700, #c49200);
+        box-shadow: 0 4px 15px rgba(245, 183, 0, 0.3);
+        color: #000;
+    }
+    .btn-video:hover { box-shadow: 0 8px 25px rgba(245, 183, 0, 0.5); }
+    
+    .btn-realtime {
+        background: linear-gradient(135deg, #ff4e00, #cc3e00);
+        box-shadow: 0 4px 15px rgba(255, 78, 0, 0.3);
         color: #fff;
     }
-
-    .hero-box h1 {
-        font-size: 4rem;
-        font-weight: bold;
-        color: #e3b409;
-    }
-
-    .hero-buttons .btn {
-        min-width: 160px;
-        font-size: 1.2rem;
-        font-weight: 600;
-        padding: 0.75rem 1.5rem;
-        margin: 0.5rem;
-        transition: transform 0.3s ease;
-        border: none;
-    }
-
-    .hero-buttons .btn:hover {
-        transform: scale(1.1);
-    }
+    .btn-realtime:hover { box-shadow: 0 8px 25px rgba(255, 78, 0, 0.5); }
 </style>
 
-<div class="hero-box">
+<div class="glass-container hero-container">
     <h1>Dehazer</h1>
-    <div class="hero-buttons mt-4 d-flex flex-wrap justify-content-center">
-        <a class="btn" href="{{ url_for('image_dehazer_route') }}" style="background-color: #00a6fb; color: #fff;">Image</a>
-        <a class="btn" href="{{ url_for('video_dehazer_route') }}" style="background-color: #f5b700; color: #fff;">Video</a>
-        <a class="btn" href="{{ url_for('realtime_dehazer') }}" style="background-color: #ff4e00; color: #fff;">Realtime</a>
+    <p style="font-size: 1.2rem; color: #ccc;">Experience crystal-clear visuals empowered by AI.</p>
+    <div class="hero-buttons">
+        <a class="btn-glow btn-hero btn-image" href="{{ url_for('image_dehazer_route') }}">Image</a>
+        <a class="btn-glow btn-hero btn-video" href="{{ url_for('video_dehazer_route') }}">Video</a>
+        <a class="btn-glow btn-hero btn-realtime" href="{{ url_for('realtime_dehazer') }}">Realtime</a>
     </div>
 </div>
 {% endblock %}

@@ -4,91 +4,303 @@
 
 {% block content %}
 <style>
-    .card-custom {
-        background-color: rgba(0, 0, 0, 0.8);
-        color: #ffffff;
-        border-radius: 20px;
-        padding: 2rem;
+    .page-container {
+        margin-top: 5vh;
+        width: 100%;
+        max-width: 900px;
+        animation: fadeIn 0.8s ease-out;
     }
 
-    .card-custom h1 {
-        color: #f5b700;
-        font-weight: 700;
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
-    .card-custom h2 {
-        color: #00a6fb;
+    h1.title {
+        color: var(--primary-glow);
+        text-align: center;
+        margin-bottom: 2rem;
     }
 
-    .form-group label {
-        font-size: 1.1rem;
-        transition: background-color 0.3s ease;
+    /* Drag & Drop Zone */
+    .dropzone {
+        border: 2px dashed var(--primary-glow);
+        border-radius: 16px;
+        padding: 3rem 2rem;
+        text-align: center;
+        background: rgba(0, 229, 255, 0.02);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
     }
 
-    .form-group label:hover {
-        background-color: #000;
-        padding: 0.2rem 0.4rem;
-        border-radius: 5px;
+    .dropzone.dragover {
+        background: rgba(0, 229, 255, 0.1);
+        border-color: var(--secondary-glow);
+        transform: scale(1.02);
     }
 
-    .form-control-file {
-        color: #fff;
-        border: 1px solid #00a6fb;
-        padding: 0.5rem;
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.05);
+    .dropzone-icon {
+        font-size: 3rem;
+        color: var(--primary-glow);
+        margin-bottom: 1rem;
     }
 
-    .btn-upload {
-        background-color: #ff4e00;
-        color: #fff;
-        font-weight: 600;
-        padding: 0.6rem 2rem;
+    .dropzone-text {
+        font-size: 1.2rem;
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .dropzone-subtext {
+        font-size: 0.9rem;
+        color: #aaa;
+    }
+
+    #file-input {
+        display: none;
+    }
+
+    .preview-container {
+        display: none;
         margin-top: 1rem;
-        transition: transform 0.3s ease;
-        border-radius: 8px;
+        text-align: center;
     }
 
-    .btn-upload:hover {
-        transform: scale(1.1);
-    }
-
-    .result-img {
-        border: 2px solid #00a6fb;
-        border-radius: 10px;
+    .preview-img {
         max-width: 100%;
-        height: auto;
+        max-height: 250px;
+        border-radius: 8px;
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     }
+
+    .btn-submit-container {
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    /* Before/After Slider */
+    .comparison-slider-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        margin: 3rem auto 0 auto;
+        overflow: hidden;
+        border-radius: 16px;
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+        background-color: #000;
+        aspect-ratio: 16/9; /* Default fallback */
+    }
+
+    .comparison-slider-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+    }
+
+    .img-before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 2;
+        border-right: 2px solid #fff;
+    }
+
+    .img-before img {
+        width: 100vw; /* To keep aspect ratio trick working, will be handled by JS */
+        max-width: 800px; /* Needs to match container max-width */
+    }
+
+    .img-after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .slider {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 3;
+        opacity: 0;
+        cursor: ew-resize;
+    }
+    
+    .slider-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #fff;
+        z-index: 4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        pointer-events: none;
+    }
+    .slider-button::before, .slider-button::after {
+        content: '';
+        border: solid #000;
+        border-width: 0 2px 2px 0;
+        display: inline-block;
+        padding: 3px;
+    }
+    .slider-button::before {
+        transform: rotate(135deg);
+        margin-right: 5px;
+    }
+    .slider-button::after {
+        transform: rotate(-45deg);
+        margin-left: 5px;
+    }
+
+    .badge-label {
+        position: absolute;
+        top: 10px;
+        padding: 5px 10px;
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        font-size: 0.8rem;
+        font-weight: 600;
+        backdrop-filter: blur(4px);
+    }
+    .badge-before { left: 10px; z-index: 5; }
+    .badge-after { right: 10px; z-index: 5; }
 </style>
 
-<div class="container" style="margin-top: 8%;">
-    <div class="row justify-content-center">
-        <div class="col-lg-10 col-xl-8">
-            <div class="card card-custom shadow-lg text-center">
-                <h1 class="mb-4">Upload an Image to Remove Haze</h1>
-                <form method="POST" enctype="multipart/form-data">
-                    <div class="form-group d-flex flex-column align-items-center">
-                        <label for="file">Choose an image file</label>
-                        <input type="file" class="form-control-file mt-2" id="file" name="file" required>
-                    </div>
-                    <button type="submit" class="btn btn-upload">Upload</button>
-                </form>
-
-                {% if original_image %}
-                <div class="mt-5">
-                    <h2>Original Image</h2>
-                    <img src="{{ original_image }}" alt="Original Image" class="result-img mt-3">
-                </div>
-                {% endif %}
-
-                {% if dehazed_image %}
-                <div class="mt-5">
-                    <h2>Dehazed Image</h2>
-                    <img src="{{ dehazed_image }}" alt="Dehazed Image" class="result-img mt-3">
-                </div>
-                {% endif %}
-            </div>
+<div class="page-container glass-container">
+    <h1 class="title">Image Dehazer</h1>
+    
+    <form method="POST" enctype="multipart/form-data" id="upload-form">
+        <div class="dropzone" id="dropzone">
+            <i class="fas fa-cloud-upload-alt dropzone-icon"></i>
+            <div class="dropzone-text">Drag & Drop your image here</div>
+            <div class="dropzone-subtext">or click to browse</div>
+            <input type="file" id="file-input" name="file" accept="image/*" required>
         </div>
+        
+        <div class="preview-container" id="preview-container">
+            <img id="preview-img" class="preview-img" src="" alt="Preview">
+            <p id="preview-filename" style="margin-top: 0.5rem; color: #aaa;"></p>
+        </div>
+
+        <div class="btn-submit-container">
+            <button type="submit" class="btn-glow" id="submit-btn" style="display: none;">Dehaze Image</button>
+        </div>
+    </form>
+
+    {% if original_image and dehazed_image %}
+    <div class="comparison-slider-wrapper" id="compare-wrapper">
+        <div class="badge-label badge-before">Original</div>
+        <div class="badge-label badge-after">Dehazed</div>
+        
+        <div class="img-after">
+            <img src="{{ dehazed_image }}" alt="Dehazed Image" id="img-after">
+        </div>
+        
+        <div class="img-before" id="img-before-container">
+            <img src="{{ original_image }}" alt="Original Image" id="img-before">
+        </div>
+        
+        <input type="range" min="0" max="100" value="50" class="slider" id="slider">
+        <div class="slider-button" id="slider-button"></div>
     </div>
+    {% endif %}
 </div>
+
+<script>
+    // Drag and Drop Logic
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('file-input');
+    const previewContainer = document.getElementById('preview-container');
+    const previewImg = document.getElementById('preview-img');
+    const previewFilename = document.getElementById('preview-filename');
+    const submitBtn = document.getElementById('submit-btn');
+
+    dropzone.addEventListener('click', () => fileInput.click());
+
+    dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+        dropzone.classList.remove('dragover');
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+            fileInput.files = e.dataTransfer.files;
+            handleFile(fileInput.files[0]);
+        }
+    });
+
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length) {
+            handleFile(fileInput.files[0]);
+        }
+    });
+
+    function handleFile(file) {
+        if (!file.type.startsWith('image/')) return;
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImg.src = e.target.result;
+            previewFilename.textContent = file.name;
+            dropzone.style.display = 'none';
+            previewContainer.style.display = 'block';
+            submitBtn.style.display = 'inline-block';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Comparison Slider Logic
+    {% if original_image and dehazed_image %}
+    const slider = document.getElementById('slider');
+    const imgBeforeContainer = document.getElementById('img-before-container');
+    const sliderButton = document.getElementById('slider-button');
+    const wrapper = document.getElementById('compare-wrapper');
+    const imgBefore = document.getElementById('img-before');
+
+    function updateSlider() {
+        const value = slider.value;
+        imgBeforeContainer.style.width = value + '%';
+        sliderButton.style.left = value + '%';
+    }
+
+    slider.addEventListener('input', updateSlider);
+
+    // Ensure resizing handles the absolute image width correctly
+    function resizeImages() {
+        const width = wrapper.offsetWidth;
+        imgBefore.style.width = width + 'px';
+    }
+
+    window.addEventListener('resize', resizeImages);
+    
+    // Initial setup after images load
+    imgBefore.onload = resizeImages;
+    resizeImages();
+    updateSlider(); // Initial state
+    {% endif %}
+</script>
 {% endblock %}

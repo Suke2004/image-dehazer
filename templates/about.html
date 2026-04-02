@@ -1,34 +1,80 @@
 {% extends 'base.html' %}
+{% block title %}About - Dehazer App{% endblock %}
 {% block content %}
-<div class="container my-5" style='background-color: transparent;'>
-  <div class="row justify-content-center">
-    <div class="col-lg-10 col-md-12 col-sm-12">
-      <div class="card text-center shadow-lg" style="background-color: #2d2d2d; color: #ffffff;">
-        <div class="card-header" style="background-color: #ff4e00;">
-          <p style="font-size: 3rem; font-weight: bold; color: #ffffff;">About the Project</p>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title" style="font-size: 1.8rem; font-weight: bold; color: #00a6fb;">What is the Dehazer App?</h5>
-          <p class="card-text text-left" style="font-size: 1.2rem; color: #ffffff;">
-            The <strong>Dehazer App</strong> is a smart web-based application designed to remove haze from images, videos, and real-time camera streams. Built with Flask and OpenCV, this project applies image processing techniques — and optionally, deep learning — to restore contrast, enhance clarity, and improve visual quality in low-visibility conditions like fog, smoke, or pollution.
-          </p>
-          <p class="card-text text-left" style="font-size: 1.2rem; color: #ffffff;">
-            Users can upload hazy media or activate their webcam to instantly see dehazed results through an intuitive, mobile-friendly interface. The app is particularly useful in fields like photography, surveillance, autonomous driving, and environmental monitoring.
-          </p>
-          <h5 class="card-title mt-4" style="font-size: 1.5rem; font-weight: bold; color: #00a6fb;">Core Features:</h5>
-          <ul class="text-left" style="font-size: 1.2rem; color: #ffffff;">
-            <li>📸 Dehaze uploaded images with one click</li>
-            <li>🎞️ Process videos and view side-by-side results</li>
-            <li>🎥 Real-time dehazing using your device's camera</li>
-            <li>⚡ Responsive, stylish UI built with Bootstrap</li>
-            <li>🛠️ Built with Flask, Python, and OpenCV</li>
-          </ul>
-          <p class="card-text text-left mt-4" style="font-size: 1.2rem; color: #ffffff;">
-            The project demonstrates how modern web technologies and computer vision can be combined to solve real-world problems in creative and accessible ways.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+<style>
+    .page-container {
+        margin-top: 5vh;
+        width: 100%;
+        max-width: 800px;
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1.title {
+        color: var(--primary-glow);
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 3rem;
+    }
+
+    h5 {
+        color: #ff4e00;
+        font-size: 1.5rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    p, li {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #ddd;
+    }
+
+    ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    li {
+        margin-bottom: 0.5rem;
+        padding-left: 1.5rem;
+        position: relative;
+    }
+
+    li::before {
+        content: '▹';
+        position: absolute;
+        left: 0;
+        color: var(--primary-glow);
+    }
+</style>
+
+<div class="page-container glass-container">
+    <h1 class="title">About the Project</h1>
+    
+    <h5>What is the Dehazer App?</h5>
+    <p>
+        The <strong>Dehazer App</strong> is a smart web-based application designed to remove haze from images, videos, and real-time camera streams. Built with Flask and OpenCV, this project applies image processing techniques — and optionally, deep learning — to restore contrast, enhance clarity, and improve visual quality in low-visibility conditions like fog, smoke, or pollution.
+    </p>
+    <p>
+        Users can upload hazy media or activate their webcam to instantly see dehazed results through an intuitive, mobile-friendly interface. The app is particularly useful in fields like photography, surveillance, autonomous driving, and environmental monitoring.
+    </p>
+    
+    <h5>Core Features</h5>
+    <ul>
+        <li>📸 Dehaze uploaded images with one click</li>
+        <li>🎞️ Process videos and view side-by-side results</li>
+        <li>🎥 Real-time dehazing using your device's camera</li>
+        <li>⚡ Responsive, premium Glassmorphism UI</li>
+        <li>🛠️ Built with Flask, Python, and OpenCV</li>
+    </ul>
+    
+    <p style="margin-top: 2rem;">
+        The project demonstrates how modern web technologies and computer vision can be combined to solve real-world problems in creative and accessible ways.
+    </p>
 </div>
 {% endblock %}

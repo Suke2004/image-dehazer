@@ -1,100 +1,82 @@
 {% extends "base.html" %}
 
-{% block title %}Video Dehazer - Dehazer App{% endblock %}
+{% block title %}Realtime Dehazer - Dehazer App{% endblock %}
 
 {% block content %}
 <style>
-    .card-custom {
-        background-color: rgba(0, 0, 0, 0.8);
-        color: #ffffff;
-        border-radius: 20px;
-        padding: 2rem;
+    .page-container {
+        margin-top: 5vh;
+        width: 100%;
+        max-width: 800px;
+        animation: fadeIn 0.8s ease-out;
+        text-align: center;
     }
 
-    .card-custom h1 {
-        color: #f5b700;
-        font-weight: 700;
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
-    .card-custom h2 {
-        color: #00a6fb;
+    h1.title {
+        color: #ff4e00;
+        margin-bottom: 2rem;
     }
 
-    .form-group label {
-        font-size: 1.1rem;
-        transition: background-color 0.3s ease;
+    .file-input-wrapper {
+        margin: 2rem 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
     }
 
-    .form-group label:hover {
-        background-color: #000;
-        padding: 0.2rem 0.4rem;
-        border-radius: 5px;
+    .video-container {
+        margin-top: 3rem;
+        text-align: left;
     }
 
-    .form-control-file {
-        color: #fff;
-        border: 1px solid #00a6fb;
-        padding: 0.5rem;
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.05);
-    }
-
-    .btn-upload {
-        background-color: #ff4e00;
-        color: #fff;
-        font-weight: 600;
-        padding: 0.6rem 2rem;
-        margin-top: 1rem;
-        transition: transform 0.3s ease;
-        border-radius: 8px;
-    }
-
-    .btn-upload:hover {
-        transform: scale(1.1);
+    .video-container h2 {
+        color: var(--primary-glow);
+        margin-bottom: 1rem;
     }
 
     video {
-        border: 2px solid #00a6fb;
-        border-radius: 10px;
-        max-width: 100%;
-        height: auto;
+        width: 100%;
+        border-radius: 12px;
+        border: 2px solid var(--glass-border);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
 </style>
 
-<div class="container" style="margin-top: 8%;">
-    <div class="row justify-content-center">
-        <div class="col-lg-10 col-xl-8">
-            <div class="card card-custom shadow-lg text-center">
-                <h1 class="mb-4">Upload a Video to Remove Haze</h1>
-                <form method="POST" enctype="multipart/form-data">
-                    <div class="form-group d-flex flex-column align-items-center">
-                        <label for="file">Choose a video file</label>
-                        <input type="file" class="form-control-file mt-2" id="file" name="file" required>
-                    </div>
-                    <button type="submit" class="btn btn-upload">Upload</button>
-                </form>
-
-                {% if original_video %}
-                <div class="mt-5">
-                    <h2>Original Video</h2>
-                    <video controls class="mt-3">
-                        <source src="{{ original_video }}" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-                {% endif %}
-
-                {% if dehazed_video %}
-                <div class="mt-5">
-                    <h2>Dehazed Video</h2>
-                    <video controls class="mt-3">
-                        <source src="{{ dehazed_video }}" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-                {% endif %}
-            </div>
+<div class="page-container glass-container">
+    <h1 class="title">Realtime Dehazer</h1>
+    <p>Upload a video stream or connect a real-time feed.</p>
+    
+    <form method="POST" enctype="multipart/form-data">
+        <div class="file-input-wrapper">
+            <input type="file" id="file" name="file" class="form-control" style="max-width: 400px;" accept="video/*" required>
         </div>
+        <button type="submit" class="btn-glow" style="background: linear-gradient(135deg, #ff4e00, #cc3e00);">Start Stream</button>
+    </form>
+
+    {% if original_video %}
+    <div class="video-container">
+        <h2>Original Stream</h2>
+        <video controls>
+            <source src="{{ original_video }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
+    {% endif %}
+
+    {% if dehazed_video %}
+    <div class="video-container">
+        <h2>Dehazed Stream</h2>
+        <video controls style="border-color: #ff4e00;">
+            <source src="{{ dehazed_video }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

@@ -5,102 +5,291 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Dehazer App{% endblock %}</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <!-- FontAwesome -->
     <script src="https://kit.fontawesome.com/a48832a9b2.js" crossorigin="anonymous"></script>
 
     <style>
+        :root {
+            --primary-glow: #00E5FF;
+            --secondary-glow: #B026FF;
+            --bg-color: #0d0f1a;
+            --text-color: #f1f1f1;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
         body {
-            background: url('https://images.unsplash.com/photo-1615048234151-6bcbca4043c4?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3') no-repeat center center fixed;
-            background-size: cover;
             margin: 0;
-            padding-top: 80px;
-            color: #fff;
+            padding: 0;
+            padding-top: 100px;
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
         }
 
+        /* Animated Deep Space / Neon Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 229, 255, 0.15), transparent 40%),
+                        radial-gradient(circle at 80% 20%, rgba(176, 38, 255, 0.15), transparent 30%);
+            z-index: -1;
+            animation: backgroundFlow 20s infinite alternate linear;
+        }
+
+        @keyframes backgroundFlow {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-5%) rotate(5deg); }
+        }
+
+        /* Glassmorphism Navbar */
         .navbar-custom {
-            backdrop-filter: blur(5px);
-            background-color: rgba(0, 0, 0, 0.6);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            box-sizing: border-box;
+            background: rgba(13, 15, 26, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
         }
 
-        .navbar-brand img {
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .nav-brand img {
             height: 50px;
-        }
-
-        .navbar-brand {
-            background-color: #e35124;
+            background-color: var(--primary-glow);
             border-radius: 50%;
             padding: 5px;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
         }
 
-        .navbar-brand:hover {
-            background-color: #b58f1f;
+        .nav-brand:hover img {
+            background-color: var(--secondary-glow);
+            box-shadow: 0 0 20px rgba(176, 38, 255, 0.6);
         }
 
-        .nav-link {
-            font-weight: 700;
-            color: #fff !important;
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
         }
 
-        .nav-link:hover {
-            color: #ff4e00 !important;
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-glow);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-glow);
+            text-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-color);
+        }
+
+        /* Mobile Nav */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: rgba(13, 15, 26, 0.95);
+                backdrop-filter: blur(20px);
+                padding: 1rem 0;
+                text-align: center;
+                border-bottom: 1px solid var(--glass-border);
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .menu-toggle {
+                display: block;
+            }
         }
 
         footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #343a40;
-            color: #f8f9fa;
+            margin-top: auto;
             text-align: center;
-            padding: 0.8rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--glass-border);
+            color: #aaa;
+            font-size: 0.9rem;
         }
 
-        .container-overlay {
-            background-color: rgba(0, 0, 0, 0.4);
-            padding: 2rem;
+        .glass-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Utility button class for consistency */
+        .btn-glow {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-glow), #007bb5);
+            color: #000;
+            font-weight: 700;
+            padding: 0.8rem 2rem;
             border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
+            text-align: center;
+        }
+        .btn-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 229, 255, 0.5);
+        }
+        
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 2rem 2rem;
+            box-sizing: border-box;
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+            font-weight: 700;
+        }
+
+        /* Generic form styling */
+        .form-group {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-glow);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-glow);
         }
     </style>
 </head>
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-custom">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url_for('home') }}">
-                <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav text-uppercase">
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('contact') }}">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('image_dehazer_route') }}">Image Dehazer</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('video_dehazer_route') }}">Video Dehazer</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('realtime_dehazer') }}">Realtime Dehazer</a></li>
-                </ul>
-            </div>
+    <nav class="navbar-custom">
+        <a class="nav-brand" href="{{ url_for('home') }}">
+            <!-- Assuming static logo is used properly, else fallback -->
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjUiIGZpbGw9IiMwMEU1RkYiLz48dGV4dCB4PSIxNiIgeT0iMzAiIGZpbGw9IiMwMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCI+RDwvdGV4dD48L3N2Zz4='">
+        </a>
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
         </div>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
+            <li><a href="{{ url_for('image_dehazer_route') }}">Image Dehazer</a></li>
+            <li><a href="{{ url_for('video_dehazer_route') }}">Video Dehazer</a></li>
+            <li><a href="{{ url_for('realtime_dehazer') }}">Realtime Dehazer</a></li>
+        </ul>
     </nav>
 
     <!-- Main Content -->
-    <div class="container container-overlay">
+    <div class="main-wrapper">
         {% block content %}{% endblock %}
     </div>
 
     <!-- Footer -->
     <footer>
-        <p class="mb-0">&copy; Design by USR</p>
+        <p>&copy; Design by USR</p>
     </footer>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
